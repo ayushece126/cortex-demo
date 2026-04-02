@@ -1,0 +1,16 @@
+.health-section { background: radial-gradient(ellipse at 30% 70%, #081a0e 0%, #06080f 70%); }
+.health-grid { display: flex; gap: 18px; flex-wrap: wrap; justify-content: center; margin-bottom: 20px; max-width: 900px; }
+.health-card { width: 200px; padding: 20px 16px; text-align: center; transition: all 0.5s; }
+.health-card.healthy { border-color: #22c55e33; }
+.health-card.degraded { border-color: #f59e0b66; box-shadow: 0 0 20px #f59e0b15; }
+.health-card.failed { border-color: #ef444466; box-shadow: 0 0 20px #ef444420; }
+.hc-header { display: flex; align-items: center; gap: 8px; justify-content: center; margin-bottom: 12px; }
+.hc-icon { font-size: 1.6rem; }
+.hc-name { font-size: 0.85rem; font-weight: 700; color: #e0e6f0; }
+.hc-wave { height: 50px; background: #0a0d1a; border-radius: 10px; overflow: hidden; }
+.hc-footer { margin-top: 12px; }
+.hc-status-badge { font-size: 0.6rem; font-weight: 700; padding: 4px 12px; border-radius: 10px; display: inline-block; }
+.hc-status-badge.idle { background: #2a2650; color: #6b7280; }
+.hc-status-badge.healthy { background: #22c55e1a; color: #4ade80; }
+.hc-status-badge.degraded { background: #f59e0b1a; color: #fbbf24; }
+.hc-status-badge.failed { background: #ef44441a; color: #f87171; }

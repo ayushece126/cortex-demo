@@ -1,0 +1,23 @@
+.kitchen-section { background: radial-gradient(ellipse at 50% 30%, #130f28 0%, #06080f 70%); }
+.kitchen-stage { display: flex; align-items: center; gap: 24px; padding: 40px 30px; overflow-x: auto; }
+.kitchen-chef { text-align: center; flex-shrink: 0; }
+.chef-avatar { font-size: 3.5rem; }
+.chef-label { font-size: 0.8rem; font-weight: 700; color: #a78bfa; margin-top: 6px; }
+.chef-label small { font-weight: 400; color: #6b7280; }
+.kitchen-line { display: flex; align-items: center; gap: 0; flex: 1; overflow-x: auto; padding: 10px 0; }
+.kitchen-connector { display: flex; align-items: center; }
+.conn-line { width: 36px; display: flex; align-items: center; justify-content: center; position: relative; }
+.conn-line::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 2px; background: #312e5a; }
+.conn-line.conn-active::before { background: linear-gradient(90deg, #6366f1, #a78bfa); box-shadow: 0 0 8px #6366f155; }
+.conn-arrow { position: relative; z-index: 1; color: #4b5563; font-size: 0.7rem; }
+.conn-active .conn-arrow { color: #a78bfa; }
+.kitchen-card { background: #1a1730; border: 2px solid #2a2650; border-radius: 16px; padding: 18px 14px; text-align: center; width: 120px; flex-shrink: 0; transition: all 0.5s; position: relative; overflow: hidden; }
+.kitchen-card.active { border-color: #a78bfa; box-shadow: 0 0 24px #6366f133; }
+.kitchen-card.done { border-color: #22c55e55; }
+.kcard-icon { font-size: 2rem; display: block; margin-bottom: 6px; }
+.kcard-name { font-size: 0.7rem; font-weight: 600; color: #c4b5fd; display: block; }
+.kcard-status { font-size: 0.55rem; font-weight: 700; margin-top: 8px; padding: 3px 10px; border-radius: 10px; display: inline-block; }
+.kcard-status.idle { background: #312e5a; color: #6b7280; }
+.kcard-status.active { background: #6366f122; color: #a78bfa; }
+.kcard-status.done { background: #22c55e22; color: #4ade80; }
+.kcard-progress { position: absolute; bottom: 0; left: 0; height: 3px; background: linear-gradient(90deg, #6366f1, #a78bfa); border-radius: 0 0 16px 16px; }

@@ -1,0 +1,247 @@
+/* === DOMINO BLAST DOOR SECTION === */
+.domino-section {
+  background: radial-gradient(ellipse at 50% 20%, #0f0a1e 0%, #06080f 60%);
+  overflow: hidden;
+}
+
+.domino-stage {
+  width: 100%;
+  max-width: 1100px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+/* Panel shared */
+.domino-panel {
+  padding: 30px 24px;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  min-height: 520px;
+  display: flex;
+  flex-direction: column;
+}
+.domino-panel-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 6px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  display: inline-block;
+  align-self: center;
+}
+
+/* WITHOUT Cortex panel */
+.panel-without {
+  background: linear-gradient(180deg, rgba(40,10,10,0.4), rgba(15,8,8,0.6));
+  border: 1px solid rgba(248,113,113,0.15);
+}
+.panel-without .domino-panel-label {
+  color: #f87171;
+  background: rgba(248,113,113,0.1);
+  border: 1px solid rgba(248,113,113,0.15);
+}
+.panel-without-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fca5a5;
+  text-align: center;
+  margin-bottom: 4px;
+}
+.panel-without-sub {
+  font-size: 0.75rem;
+  color: #6b7280;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* WITH Cortex panel */
+.panel-with {
+  background: linear-gradient(180deg, rgba(10,25,20,0.4), rgba(8,15,12,0.6));
+  border: 1px solid rgba(74,222,128,0.15);
+}
+.panel-with .domino-panel-label {
+  color: #4ade80;
+  background: rgba(74,222,128,0.1);
+  border: 1px solid rgba(74,222,128,0.15);
+}
+.panel-with-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #86efac;
+  text-align: center;
+  margin-bottom: 4px;
+}
+.panel-with-sub {
+  font-size: 0.75rem;
+  color: #6b7280;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Domino Pieces */
+.domino-track {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px 0;
+  position: relative;
+}
+.domino-piece {
+  width: 36px;
+  height: 80px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  transform-origin: bottom center;
+  transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+  position: relative;
+}
+.domino-piece-icon {
+  width: 16px;
+  height: 16px;
+}
+.domino-piece-name {
+  font-size: 0.5rem;
+  font-weight: 600;
+  writing-mode: vertical-lr;
+  text-orientation: mixed;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+/* Standing domino */
+.domino-piece.standing {
+  background: linear-gradient(180deg, rgba(30,27,58,0.9), rgba(20,18,40,0.9));
+  border: 1px solid rgba(99,102,241,0.3);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  color: #a5b4fc;
+}
+
+/* Fallen domino */
+.domino-piece.fallen {
+  background: linear-gradient(180deg, rgba(60,15,15,0.9), rgba(40,10,10,0.9));
+  border: 1px solid rgba(248,113,113,0.5);
+  box-shadow: 0 0 20px rgba(248,113,113,0.2);
+  color: #f87171;
+}
+
+/* Protected domino (behind blast door) */
+.domino-piece.protected {
+  background: linear-gradient(180deg, rgba(20,40,30,0.9), rgba(15,30,22,0.9));
+  border: 1px solid rgba(74,222,128,0.4);
+  box-shadow: 0 0 15px rgba(74,222,128,0.1);
+  color: #4ade80;
+}
+
+/* Restarted domino */
+.domino-piece.restarted {
+  background: linear-gradient(180deg, rgba(15,25,45,0.9), rgba(10,18,35,0.9));
+  border: 1px solid rgba(96,165,250,0.4);
+  box-shadow: 0 0 15px rgba(96,165,250,0.15);
+  color: #60a5fa;
+}
+
+/* Blast Door */
+.blast-door {
+  position: absolute;
+  width: 8px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #fbbf24, #f59e0b);
+  box-shadow: 0 0 20px rgba(251,191,36,0.4), 0 0 40px rgba(251,191,36,0.15);
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.blast-door::before {
+  content: '🛡️';
+  position: absolute;
+  top: -20px;
+  font-size: 14px;
+}
+.blast-door::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 8px;
+  background: rgba(251,191,36,0.08);
+  animation: blastPulse 1.5s ease-in-out infinite;
+}
+@keyframes blastPulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(251,191,36,0.1); }
+  50% { box-shadow: 0 0 25px rgba(251,191,36,0.3); }
+}
+
+/* Impact flash */
+.domino-flash {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Result badge */
+.domino-result {
+  text-align: center;
+  padding: 12px 20px;
+  border-radius: 14px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-top: 12px;
+}
+.domino-result.fail {
+  background: rgba(248,113,113,0.1);
+  border: 1px solid rgba(248,113,113,0.2);
+  color: #f87171;
+}
+.domino-result.success {
+  background: rgba(74,222,128,0.1);
+  border: 1px solid rgba(74,222,128,0.2);
+  color: #4ade80;
+}
+
+/* Narration */
+.domino-narration {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  text-align: center;
+  margin-top: 20px;
+  padding: 14px 24px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(30,27,58,0.5), rgba(15,12,40,0.5));
+  border: 1px solid rgba(99,102,241,0.1);
+  max-width: 1100px;
+  width: 100%;
+  line-height: 1.6;
+  min-height: 50px;
+}
+
+/* Screen shake */
+@keyframes screenShake {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-3px, -2px); }
+  20% { transform: translate(3px, 1px); }
+  30% { transform: translate(-2px, 3px); }
+  40% { transform: translate(2px, -1px); }
+  50% { transform: translate(-1px, 2px); }
+  60% { transform: translate(3px, -2px); }
+  70% { transform: translate(-3px, 1px); }
+  80% { transform: translate(1px, -3px); }
+  90% { transform: translate(-2px, 2px); }
+}
+.shake { animation: screenShake 0.6s ease-in-out; }
+
+@media (max-width: 900px) {
+  .domino-stage { grid-template-columns: 1fr; }
+}

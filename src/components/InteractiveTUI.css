@@ -1,0 +1,188 @@
+/* === INTERACTIVE TUI CONSOLE === */
+.tui-section {
+  background: radial-gradient(ellipse at 50% 80%, #0c0a1a 0%, #06080f 60%);
+}
+
+.tui-stage {
+  width: 100%;
+  max-width: 1200px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+/* Service dashboard */
+.tui-dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(10,8,25,0.9), rgba(6,8,15,0.9));
+  border: 1px solid rgba(99,102,241,0.12);
+  border-radius: 16px;
+}
+.tui-svc-card {
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(30,27,58,0.5);
+  border: 1px solid rgba(99,102,241,0.08);
+  transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+  text-align: center;
+}
+.tui-svc-card.running {
+  border-color: rgba(74,222,128,0.3);
+  background: rgba(20,40,30,0.5);
+}
+.tui-svc-card.stopped {
+  border-color: rgba(107,114,128,0.3);
+  background: rgba(20,20,25,0.5);
+  opacity: 0.6;
+}
+.tui-svc-card.crashed {
+  border-color: rgba(248,113,113,0.4);
+  background: rgba(60,15,15,0.5);
+  animation: tuiNodePulse 1.5s ease-in-out infinite;
+}
+.tui-svc-card.restarting {
+  border-color: rgba(96,165,250,0.4);
+  background: rgba(20,20,50,0.5);
+}
+@keyframes tuiNodePulse {
+  0%, 100% { box-shadow: 0 0 15px rgba(248,113,113,0.1); }
+  50% { box-shadow: 0 0 25px rgba(248,113,113,0.25); }
+}
+
+.tui-svc-icon {
+  width: 24px;
+  height: 24px;
+  margin: 0 auto 6px;
+}
+.tui-svc-card.running .tui-svc-icon { color: #4ade80; }
+.tui-svc-card.stopped .tui-svc-icon { color: #6b7280; }
+.tui-svc-card.crashed .tui-svc-icon { color: #f87171; }
+.tui-svc-card.restarting .tui-svc-icon { color: #60a5fa; }
+
+.tui-svc-name {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #e0e6f0;
+  margin-bottom: 4px;
+}
+.tui-svc-status {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 6px;
+  display: inline-block;
+}
+.tui-svc-card.running .tui-svc-status { color: #4ade80; background: rgba(74,222,128,0.1); }
+.tui-svc-card.stopped .tui-svc-status { color: #6b7280; background: rgba(107,114,128,0.1); }
+.tui-svc-card.crashed .tui-svc-status { color: #f87171; background: rgba(248,113,113,0.1); }
+.tui-svc-card.restarting .tui-svc-status { color: #60a5fa; background: rgba(96,165,250,0.1); }
+
+/* Terminal */
+.tui-terminal {
+  background: #0a0a0a;
+  border: 1px solid #2a2a2a;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+}
+.tui-terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: #1a1a1a;
+  border-bottom: 1px solid #2a2a2a;
+}
+.tui-terminal-dots {
+  display: flex;
+  gap: 6px;
+}
+.tui-terminal-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.tui-terminal-dot.r { background: #ff5f56; }
+.tui-terminal-dot.y { background: #ffbd2e; }
+.tui-terminal-dot.g { background: #27c93f; }
+.tui-terminal-title {
+  font-size: 0.72rem;
+  color: #6b7280;
+  font-family: 'JetBrains Mono', monospace;
+  margin-left: 8px;
+}
+
+.tui-terminal-body {
+  padding: 16px;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.78rem;
+  line-height: 1.7;
+  min-height: 220px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+.tui-terminal-body::-webkit-scrollbar { width: 4px; }
+.tui-terminal-body::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+
+.tui-line { display: flex; gap: 0; white-space: pre-wrap; word-break: break-all; }
+.tui-prompt { color: #4ade80; font-weight: 600; flex-shrink: 0; }
+.tui-cmd { color: #e0e6f0; }
+.tui-output { color: #94a3b8; }
+.tui-output.success { color: #4ade80; }
+.tui-output.error { color: #f87171; }
+.tui-output.warning { color: #fbbf24; }
+.tui-output.info { color: #818cf8; }
+
+/* Input line */
+.tui-input-line {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-top: 4px;
+}
+.tui-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #e0e6f0;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.78rem;
+  flex: 1;
+  caret-color: #4ade80;
+}
+.tui-input::placeholder { color: #374151; }
+
+/* Help overlay */
+.tui-help {
+  margin-top: 12px;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, rgba(30,27,58,0.6), rgba(15,12,40,0.6));
+  border: 1px solid rgba(99,102,241,0.1);
+  border-radius: 14px;
+  font-size: 0.72rem;
+  color: #6b7280;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.tui-help-cmd {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.tui-help-key {
+  background: rgba(99,102,241,0.15);
+  color: #a5b4fc;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  border: 1px solid rgba(99,102,241,0.2);
+}
+.tui-help-desc { color: #6b7280; }

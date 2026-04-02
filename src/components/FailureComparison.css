@@ -1,0 +1,22 @@
+.failure-section { background: radial-gradient(ellipse at 50% 50%, #1a0808 0%, #06080f 70%); }
+.comp-row { display: flex; gap: 24px; width: 100%; max-width: 1000px; flex-wrap: wrap; }
+.comp-panel { flex: 1; min-width: 320px; padding: 28px; text-align: center; }
+.panel-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 18px; }
+.title-danger { color: #f87171; }
+.title-success { color: #4ade80; }
+.panel-services { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 16px; }
+.panel-svc { width: 80px; padding: 12px 6px; background: #151230; border: 2px solid #2a2650; border-radius: 14px; transition: all 0.5s; }
+.panel-svc.svc-running { border-color: #22c55e55; }
+.panel-svc.svc-failed { border-color: #ef4444; box-shadow: 0 0 15px #ef444433; }
+.panel-svc.svc-corrupted { border-color: #f59e0b; box-shadow: 0 0 12px #f59e0b22; }
+.panel-svc.svc-stopped { border-color: #4b5563; opacity: 0.5; }
+.panel-svc.svc-restarting { border-color: #60a5fa; box-shadow: 0 0 12px #60a5fa33; }
+.psvc-icon { font-size: 1.3rem; display: block; }
+.psvc-name { font-size: 0.6rem; font-weight: 600; color: #94a3b8; display: block; margin-top: 4px; }
+.psvc-status { font-size: 0.5rem; font-weight: 700; margin-top: 5px; padding: 2px 6px; border-radius: 8px; display: inline-block; }
+.psvc-status.svc-running { background: #22c55e22; color: #4ade80; }
+.psvc-status.svc-failed { background: #ef444422; color: #f87171; }
+.psvc-status.svc-corrupted { background: #f59e0b22; color: #fbbf24; }
+.psvc-status.svc-stopped { background: #4b556322; color: #6b7280; }
+.psvc-status.svc-restarting { background: #60a5fa22; color: #60a5fa; }
+.panel-msg { font-size: 0.85rem; color: #94a3b8; min-height: 44px; margin-bottom: 14px; line-height: 1.5; }

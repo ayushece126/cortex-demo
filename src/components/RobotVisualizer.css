@@ -1,0 +1,144 @@
+/* === 3D ROBOT VISUALIZER === */
+.robot-section {
+  background: radial-gradient(ellipse at 40% 40%, #0c0a1e 0%, #06080f 60%);
+  overflow: hidden;
+}
+
+.robot-stage {
+  width: 100%;
+  max-width: 1200px;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 20px;
+  min-height: 560px;
+}
+
+/* 3D Canvas Container */
+.robot-canvas {
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(99,102,241,0.15);
+  background: linear-gradient(180deg, #080612 0%, #050410 100%);
+  position: relative;
+  min-height: 500px;
+}
+.robot-canvas canvas {
+  border-radius: 20px;
+}
+
+/* Status panel */
+.robot-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.robot-svc {
+  padding: 12px 14px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+  cursor: default;
+}
+.robot-svc.healthy {
+  background: linear-gradient(135deg, rgba(20,40,30,0.6), rgba(15,30,22,0.6));
+  border: 1px solid rgba(74,222,128,0.2);
+}
+.robot-svc.failed {
+  background: linear-gradient(135deg, rgba(60,15,15,0.6), rgba(40,10,10,0.6));
+  border: 1px solid rgba(248,113,113,0.4);
+  animation: robotSvcPulse 1.2s ease-in-out infinite;
+}
+.robot-svc.restarting {
+  background: linear-gradient(135deg, rgba(20,20,50,0.6), rgba(15,15,40,0.6));
+  border: 1px solid rgba(96,165,250,0.3);
+}
+.robot-svc.idle {
+  background: rgba(30,27,58,0.4);
+  border: 1px solid rgba(99,102,241,0.08);
+}
+@keyframes robotSvcPulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(248,113,113,0.1); }
+  50% { box-shadow: 0 0 25px rgba(248,113,113,0.25); }
+}
+
+.robot-svc-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.robot-svc.healthy .robot-svc-dot { background: #4ade80; box-shadow: 0 0 6px #4ade80; }
+.robot-svc.failed .robot-svc-dot { background: #f87171; box-shadow: 0 0 6px #f87171; }
+.robot-svc.restarting .robot-svc-dot { background: #60a5fa; box-shadow: 0 0 6px #60a5fa; }
+.robot-svc.idle .robot-svc-dot { background: #374151; }
+
+.robot-svc-icon {
+  width: 18px;
+  height: 18px;
+}
+.robot-svc.healthy .robot-svc-icon { color: #4ade80; }
+.robot-svc.failed .robot-svc-icon { color: #f87171; }
+.robot-svc.restarting .robot-svc-icon { color: #60a5fa; }
+.robot-svc.idle .robot-svc-icon { color: #4b5563; }
+
+.robot-svc-info {
+  flex: 1;
+  min-width: 0;
+}
+.robot-svc-name {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #e0e6f0;
+}
+.robot-svc.idle .robot-svc-name { color: #6b7280; }
+.robot-svc-status {
+  font-size: 0.6rem;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.robot-svc.healthy .robot-svc-status { color: #4ade80; }
+.robot-svc.failed .robot-svc-status { color: #f87171; }
+.robot-svc.restarting .robot-svc-status { color: #60a5fa; }
+
+/* Alert banner */
+.robot-alert {
+  padding: 12px 18px;
+  border-radius: 14px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 8px;
+}
+.robot-alert.danger {
+  background: rgba(248,113,113,0.1);
+  border: 1px solid rgba(248,113,113,0.3);
+  color: #f87171;
+}
+.robot-alert.success {
+  background: rgba(74,222,128,0.1);
+  border: 1px solid rgba(74,222,128,0.3);
+  color: #4ade80;
+}
+.robot-alert.info {
+  background: rgba(96,165,250,0.1);
+  border: 1px solid rgba(96,165,250,0.3);
+  color: #60a5fa;
+}
+
+/* Controls */
+.robot-controls {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 900px) {
+  .robot-stage { grid-template-columns: 1fr; }
+  .robot-canvas { min-height: 400px; }
+}

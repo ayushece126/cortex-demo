@@ -1,0 +1,24 @@
+.hero-section { flex-direction: row; justify-content: center; gap: 80px; padding-top: 80px; padding-bottom: 80px; min-height: 100vh; background: radial-gradient(ellipse at 30% 40%, #0f0c28 0%, #06080f 70%); flex-wrap: wrap; }
+.hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(99,102,241,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,0.04) 1px, transparent 1px); background-size: 60px 60px; animation: gridScroll 30s linear infinite; }
+@keyframes gridScroll { from { transform: translate(0,0); } to { transform: translate(60px,60px); } }
+.hero-left { max-width: 540px; z-index: 2; }
+.hero-title { margin-bottom: 28px; }
+.hero-brand { display: block; font-size: clamp(3rem, 7vw, 5.5rem); font-weight: 900; background: linear-gradient(135deg, #6366f1 0%, #a78bfa 40%, #22d3ee 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.1; }
+.hero-tagline { display: block; font-size: clamp(1.1rem, 2.2vw, 1.5rem); font-weight: 300; color: #94a3b8; margin-top: 10px; }
+.hero-desc { font-size: 1.05rem; color: #94a3b8; line-height: 1.8; margin-bottom: 36px; }
+.hero-desc strong { color: #a78bfa; }
+.hero-cta { padding: 18px 40px; font-size: 1.05rem; }
+.hero-right { z-index: 2; flex-shrink: 0; }
+
+/* Orbital */
+.hero-orb { position: relative; width: 340px; height: 340px; }
+.orb-core { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #7c3aed); display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 0 60px #6366f144, 0 0 120px #6366f122; z-index: 3; }
+.orb-label { font-weight: 800; font-size: 0.85rem; color: white; }
+.orb-sub { font-size: 0.55rem; color: #c4b5fd; letter-spacing: 2px; text-transform: uppercase; }
+.orb-ring { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 280px; height: 280px; border-radius: 50%; border: 1px dashed #6366f133; animation: orbitSpin 20s linear infinite; }
+.ring2 { width: 200px; height: 200px; animation-duration: 15s; animation-direction: reverse; border-color: #818cf822; }
+@keyframes orbitSpin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+.orb-service { position: absolute; transform: translate(-50%, -50%); z-index: 4; }
+.orb-svc-inner { background: #1e1b3a; border: 1.5px solid #312e5a; border-radius: 14px; padding: 10px 14px; display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 1.2rem; }
+.orb-svc-label { font-size: 0.55rem; font-weight: 700; color: #a5b4fc; letter-spacing: 0.5px; }
+@media (max-width: 768px) { .hero-section { flex-direction: column; text-align: center; } .hero-right { margin-top: 20px; } .hero-orb { width: 280px; height: 280px; } }

@@ -1,0 +1,218 @@
+/* === CODEBASE X-RAY === */
+.xray-section {
+  background: radial-gradient(ellipse at 70% 30%, #0c0a1a 0%, #06080f 60%);
+}
+
+.xray-stage {
+  width: 100%;
+  max-width: 1200px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(99,102,241,0.15);
+  min-height: 520px;
+}
+
+/* Left panel — architecture view */
+.xray-arch {
+  padding: 30px;
+  background: linear-gradient(180deg, rgba(10,8,25,0.95), rgba(6,8,15,0.95));
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.xray-arch-title {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #4b5563;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* Architecture blocks */
+.xray-block {
+  padding: 14px 18px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.5s cubic-bezier(0.4,0,0.2,1);
+  position: relative;
+}
+.xray-block.inactive {
+  background: rgba(30,27,58,0.4);
+  border: 1px solid rgba(99,102,241,0.08);
+}
+.xray-block.active {
+  background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(139,92,246,0.08));
+  border: 1px solid rgba(99,102,241,0.35);
+  box-shadow: 0 0 30px rgba(99,102,241,0.1);
+}
+.xray-block.completed {
+  background: rgba(20,40,30,0.5);
+  border: 1px solid rgba(74,222,128,0.2);
+}
+.xray-block-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.xray-block.inactive .xray-block-icon {
+  background: rgba(30,27,58,0.6);
+  color: #4b5563;
+}
+.xray-block.active .xray-block-icon {
+  background: rgba(99,102,241,0.2);
+  color: #a5b4fc;
+}
+.xray-block.completed .xray-block-icon {
+  background: rgba(74,222,128,0.15);
+  color: #4ade80;
+}
+.xray-block-info h4 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #e0e6f0;
+  margin-bottom: 2px;
+}
+.xray-block.inactive .xray-block-info h4 { color: #6b7280; }
+.xray-block-info p {
+  font-size: 0.7rem;
+  color: #6b7280;
+}
+.xray-block.active .xray-block-info p { color: #a5b4fc; }
+.xray-block.completed .xray-block-info p { color: #4ade80; }
+
+/* Connector lines */
+.xray-connector {
+  width: 2px;
+  height: 16px;
+  margin-left: 30px;
+  transition: background 0.5s;
+}
+.xray-connector.inactive { background: rgba(99,102,241,0.08); }
+.xray-connector.active { background: linear-gradient(180deg, #6366f1, #a78bfa); box-shadow: 0 0 8px rgba(99,102,241,0.3); }
+.xray-connector.completed { background: rgba(74,222,128,0.3); }
+
+/* Right panel — code editor */
+.xray-editor {
+  background: #0d1117;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+  font-size: 0.72rem;
+  line-height: 1.65;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Editor title bar */
+.xray-editor-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: #161b22;
+  border-bottom: 1px solid #21262d;
+}
+.xray-editor-dots {
+  display: flex;
+  gap: 6px;
+}
+.xray-editor-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.xray-editor-dot.red { background: #ff5f56; }
+.xray-editor-dot.yellow { background: #ffbd2e; }
+.xray-editor-dot.green { background: #27c93f; }
+.xray-editor-tab {
+  font-size: 0.7rem;
+  color: #8b949e;
+  padding: 3px 12px;
+  background: #0d1117;
+  border-radius: 6px 6px 0 0;
+  border: 1px solid #21262d;
+  border-bottom: 1px solid #0d1117;
+  margin-left: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s;
+}
+.xray-editor-tab.active {
+  color: #e6edf3;
+  background: #0d1117;
+}
+.xray-editor-tab-icon { color: #f97316; width: 12px; height: 12px; }
+.xray-file-path {
+  font-size: 0.6rem;
+  color: #484f58;
+  margin-left: auto;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Code area */
+.xray-code-area {
+  flex: 1;
+  padding: 16px 0;
+  overflow-y: auto;
+  position: relative;
+}
+.xray-code-area::-webkit-scrollbar { width: 6px; }
+.xray-code-area::-webkit-scrollbar-thumb { background: #21262d; border-radius: 3px; }
+
+/* Override syntax highlighter */
+.xray-code-area pre {
+  margin: 0 !important;
+  padding: 0 16px !important;
+  background: transparent !important;
+}
+.xray-code-area code {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace !important;
+  font-size: 0.72rem !important;
+}
+
+/* Typing cursor */
+.xray-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 14px;
+  background: #6366f1;
+  animation: cursorBlink 0.8s step-end infinite;
+  vertical-align: text-bottom;
+  margin-left: 1px;
+}
+@keyframes cursorBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+/* Highlight active line */
+.xray-highlight-line {
+  background: rgba(99,102,241,0.08) !important;
+  border-left: 2px solid #6366f1;
+  display: block;
+}
+
+/* Controls */
+.xray-controls {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 900px) {
+  .xray-stage {
+    grid-template-columns: 1fr;
+  }
+  .xray-editor { min-height: 400px; }
+}

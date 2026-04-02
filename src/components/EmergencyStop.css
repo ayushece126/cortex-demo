@@ -1,0 +1,22 @@
+.emg-section { background: radial-gradient(ellipse at 50% 50%, #1a0505 0%, #06080f 70%); }
+.emg-stage { display: flex; align-items: center; justify-content: center; position: relative; }
+.emg-services { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; z-index: 2; }
+.emg-svc { width: 110px; padding: 16px 10px; background: #151230; border: 2px solid #2a2650; border-radius: 16px; text-align: center; transition: all 0.5s; position: relative; }
+.emg-svc.critical { border-width: 2.5px; }
+.emg-svc.running { border-color: #22c55e55; }
+.emg-svc.failed { border-color: #ef4444; box-shadow: 0 0 20px #ef444444; }
+.emg-svc.stopped { border-color: #4b556355; opacity: 0.4; }
+.emg-icon { font-size: 1.6rem; display: block; }
+.emg-name { font-size: 0.7rem; font-weight: 600; color: #94a3b8; display: block; margin-top: 4px; }
+.emg-svc.critical .emg-name { color: #f87171; }
+.emg-status { font-size: 0.55rem; font-weight: 700; margin-top: 6px; padding: 3px 8px; border-radius: 8px; display: inline-block; }
+.emg-status.pending { background: #2a2650; color: #6b7280; }
+.emg-status.running { background: #22c55e22; color: #4ade80; }
+.emg-status.failed { background: #ef444422; color: #f87171; }
+.emg-status.stopped { background: #4b556322; color: #6b7280; }
+.emg-badge { position: absolute; top: -8px; right: -8px; font-size: 0.45rem; font-weight: 800; background: #ef4444; color: white; padding: 2px 6px; border-radius: 6px; letter-spacing: 1px; }
+.emg-overlay { position: absolute; inset: 0; background: rgba(180, 20, 20, 0.92); backdrop-filter: blur(6px); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; border-radius: 20px; padding: 30px; text-align: center; }
+.emg-overlay-icon { font-size: 4rem; margin-bottom: 8px; }
+.emg-overlay-title { font-size: 2rem; font-weight: 900; color: white; letter-spacing: 4px; }
+.emg-overlay-sub { font-size: 1rem; color: #fecaca; margin-top: 6px; }
+.emg-overlay-detail { font-size: 0.8rem; color: #fecaca; margin-top: 12px; max-width: 500px; line-height: 1.5; opacity: 0.8; }

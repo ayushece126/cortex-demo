@@ -1,0 +1,16 @@
+.table-section { background: radial-gradient(ellipse at 50% 30%, #0f0c28 0%, #06080f 70%); }
+.table-wrap { width: 100%; max-width: 950px; overflow-x: auto; padding: 4px; }
+.comp-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+.comp-table th, .comp-table td { padding: 15px 18px; text-align: center; font-size: 0.8rem; border-bottom: 1px solid #1e1b3a; }
+.comp-table th { background: #151230; font-weight: 700; color: #94a3b8; font-size: 0.75rem; letter-spacing: 0.5px; }
+.comp-table th:first-child { text-align: left; border-radius: 12px 0 0 0; }
+.comp-table th:last-child { border-radius: 0 12px 0 0; }
+.feat-col { text-align: left !important; }
+.feat-cell { text-align: left; font-weight: 600; color: #e0e6f0; }
+.cortex-col { background: #22c55e0a; }
+.cortex-cell { background: #22c55e08; font-weight: 700; }
+.cell-yes { color: #4ade80; font-weight: 700; }
+.cell-no { color: #f87171; }
+.cell-partial { color: #fbbf24; }
+.comp-table tbody tr { transition: background 0.3s; }
+.comp-table tbody tr:hover { background: #1e1b3a33; }

@@ -1,0 +1,49 @@
+.flow-section { background: radial-gradient(ellipse at 40% 60%, #100d28 0%, #06080f 70%); }
+.flow-container { display: flex; gap: 30px; width: 100%; max-width: 1100px; flex-wrap: wrap; }
+.flow-diagram { flex: 1; min-width: 400px; padding: 30px; display: flex; flex-direction: column; align-items: center; gap: 8px; position: relative; }
+.flow-box { padding: 18px 22px; border-radius: 16px; text-align: center; transition: all 0.6s; background: #151230; border: 2px solid #2a2650; width: 220px; }
+.flow-box.glow { box-shadow: 0 0 30px rgba(99,102,241,0.25); border-color: #6366f1; }
+.flow-terminal.glow { border-color: #f59e0b; box-shadow: 0 0 30px rgba(245,158,11,0.2); }
+.flow-cli.glow { border-color: #60a5fa; box-shadow: 0 0 30px rgba(96,165,250,0.2); }
+.flow-daemon.glow { border-color: #a78bfa; box-shadow: 0 0 30px rgba(167,139,250,0.2); }
+.flow-tui.glow { border-color: #4ade80; box-shadow: 0 0 30px rgba(74,222,128,0.2); }
+.fbox-icon { font-size: 2rem; margin-bottom: 4px; }
+.fbox-label { font-size: 0.85rem; font-weight: 700; color: #e0e6f0; }
+.fbox-sub { font-size: 0.65rem; color: #6b7280; margin-top: 2px; }
+.flow-arrow, .flow-arrow-h { color: #3b3760; transition: color 0.5s; display: flex; flex-direction: column; align-items: center; }
+.flow-arrow.arrow-active, .flow-arrow-h.arrow-active { color: #6366f1; }
+.arrow-label, .arrow-label-h { font-size: 0.55rem; font-weight: 600; color: inherit; font-family: 'JetBrains Mono', monospace; letter-spacing: 1px; }
+.flow-middle { display: flex; align-items: center; gap: 12px; align-self: stretch; justify-content: center; }
+
+.flow-daemon { width: 260px; }
+.daemon-channels { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; justify-content: center; }
+.channel-pill { font-size: 0.55rem; background: #6366f122; color: #a5b4fc; padding: 3px 8px; border-radius: 8px; border: 1px solid #6366f133; }
+.daemon-graph { margin-top: 10px; padding: 8px; background: #0f0c22; border-radius: 10px; border: 1px solid #2a2650; }
+.mini-graph-label { font-size: 0.5rem; color: #818cf8; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+.mini-graph { font-size: 0.9rem; letter-spacing: 2px; }
+
+.flow-socket-area { text-align: center; padding: 12px; position: relative; }
+.socket-icon { font-size: 1.5rem; }
+.socket-label { font-size: 0.7rem; font-weight: 700; color: #c4b5fd; }
+.socket-sub { font-size: 0.5rem; color: #4b5563; font-family: 'JetBrains Mono', monospace; }
+.flow-socket-area.glow .socket-icon { filter: drop-shadow(0 0 10px #a78bfa); }
+.socket-pulses { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+.socket-pulse { position: absolute; top: -12px; left: -12px; width: 24px; height: 24px; border-radius: 50%; border: 2px solid #a78bfa; }
+
+.flow-services { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin-top: 8px; }
+.flow-svc-pill { font-size: 0.65rem; background: #22c55e15; color: #4ade80; padding: 4px 10px; border-radius: 10px; border: 1px solid #22c55e33; }
+
+/* Timeline */
+.flow-timeline { width: 320px; flex-shrink: 0; max-height: 600px; overflow-y: auto; padding-right: 8px; }
+.timeline-steps { display: flex; flex-direction: column; gap: 2px; }
+.timeline-step { display: flex; gap: 12px; padding: 10px 12px; border-radius: 12px; cursor: pointer; transition: background 0.3s; }
+.timeline-step:hover { background: #1a1730; }
+.timeline-step.active { background: #1e1b3a; }
+.ts-dot { width: 28px; height: 28px; border-radius: 50%; border: 2px solid #2a2650; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 700; color: #6b7280; flex-shrink: 0; transition: all 0.3s; }
+.timeline-step.active .ts-dot { background: #6366f122; color: #a5b4fc; }
+.timeline-step.done .ts-dot { background: #22c55e22; color: #4ade80; border-color: #22c55e55; }
+.ts-title { font-size: 0.75rem; font-weight: 600; color: #c4b5fd; }
+.timeline-step.active .ts-title { color: #e0e6f0; }
+.ts-desc { font-size: 0.7rem; color: #94a3b8; line-height: 1.5; margin-top: 4px; overflow: hidden; }
+
+@media (max-width: 768px) { .flow-container { flex-direction: column; } .flow-timeline { width: 100%; max-height: none; } }
