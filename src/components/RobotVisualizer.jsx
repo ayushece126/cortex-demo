@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef, useMemo, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Float, Text, RoundedBox } from '@react-three/drei';
+import { OrbitControls, Float, Text, RoundedBox, Edges } from '@react-three/drei';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Radar, Camera, Brain, Navigation, Cog, Gauge, Shield, Cpu,
@@ -106,53 +106,85 @@ function SensorNode({ position, color, status, label }) {
   );
 }
 
-/* ── Robot Body ── */
+/* ── Robot Body — Holographic Wireframe ── */
 function RobotBody() {
   const bodyRef = useRef();
+  const pulseRef = useRef();
 
   useFrame(({ clock }) => {
     if (bodyRef.current) {
       bodyRef.current.rotation.y = Math.sin(clock.getElapsedTime() * 0.3) * 0.05;
     }
+    if (pulseRef.current) {
+      pulseRef.current.material.opacity = 0.4 + Math.sin(clock.getElapsedTime() * 2) * 0.2;
+      pulseRef.current.scale.setScalar(1 + Math.sin(clock.getElapsedTime() * 2) * 0.08);
+    }
   });
 
   return (
     <group ref={bodyRef}>
-      {/* Main chassis */}
+      {/* Main chassis — transparent with glowing edges */}
       <RoundedBox args={[2.4, 0.6, 3.2]} radius={0.15} smoothness={4} position={[0, 0.3, 0]}>
         <meshStandardMaterial
-          color="#1a1730"
-          metalness={0.8}
-          roughness={0.2}
-          emissive="#1a1730"
-          emissiveIntensity={0.1}
+          color="#1e1b3a"
+          transparent
+          opacity={0.08}
+          metalness={0.9}
+          roughness={0.1}
+          emissive="#6366f1"
+          emissiveIntensity={0.15}
         />
+        <Edges threshold={15} color="#6366f1" linewidth={1} />
       </RoundedBox>
 
-      {/* Top platform */}
+      {/* Top platform — transparent with edges */}
       <RoundedBox args={[1.8, 0.3, 2.4]} radius={0.1} smoothness={4} position={[0, 0.8, 0]}>
         <meshStandardMaterial
           color="#252240"
-          metalness={0.7}
-          roughness={0.3}
-          emissive="#252240"
-          emissiveIntensity={0.05}
+          transparent
+          opacity={0.06}
+          metalness={0.9}
+          roughness={0.1}
+          emissive="#818cf8"
+          emissiveIntensity={0.1}
         />
+        <Edges threshold={15} color="#818cf8" linewidth={1} />
       </RoundedBox>
 
-      {/* Wheels */}
+      {/* Wheels — slightly transparent with glow */}
       {[[-1.1, -0.1, 1.2], [1.1, -0.1, 1.2], [-1.1, -0.1, -1.2], [1.1, -0.1, -1.2]].map((pos, i) => (
         <mesh key={i} position={pos} rotation={[0, 0, Math.PI / 2]}>
           <cylinderGeometry args={[0.3, 0.3, 0.2, 16]} />
-          <meshStandardMaterial color="#0a0a0a" metalness={0.9} roughness={0.1} />
+          <meshStandardMaterial
+            color="#4ade80"
+            transparent
+            opacity={0.15}
+            emissive="#4ade80"
+            emissiveIntensity={0.3}
+            metalness={0.8}
+            roughness={0.2}
+          />
         </mesh>
       ))}
 
-      {/* Central processing glow */}
-      <mesh position={[0, 1.0, 0]}>
-        <sphereGeometry args={[0.15, 16, 16]} />
-        <meshBasicMaterial color="#6366f1" transparent opacity={0.6} />
+      {/* Central processing core — pulsing glow */}
+      <mesh ref={pulseRef} position={[0, 1.0, 0]}>
+        <sphereGeometry args={[0.2, 16, 16]} />
+        <meshBasicMaterial color="#6366f1" transparent opacity={0.5} />
       </mesh>
+      {/* Processing core outer ring */}
+      <mesh position={[0, 1.0, 0]}>
+        <torusGeometry args={[0.35, 0.02, 8, 32]} />
+        <meshBasicMaterial color="#a5b4fc" transparent opacity={0.4} />
+      </mesh>
+
+      {/* Scanline bands across chassis */}
+      {[-0.8, 0, 0.8].map((z, i) => (
+        <mesh key={`scan-${i}`} position={[0, 0.61, z]}>
+          <boxGeometry args={[2.3, 0.01, 0.02]} />
+          <meshBasicMaterial color="#4ade80" transparent opacity={0.25} />
+        </mesh>
+      ))}
     </group>
   );
 }

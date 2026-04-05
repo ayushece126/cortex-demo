@@ -1,0 +1,266 @@
+/* === SELF-HEALING PROCESS TREE === */
+.healing-section {
+  background: radial-gradient(ellipse at 50% 20%, #0f0a1e 0%, #06080f 60%);
+  overflow: hidden;
+}
+
+/* Split stage */
+.healing-stage {
+  width: 100%;
+  max-width: 1200px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+/* Panel shared */
+.healing-panel {
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.healing-panel-header {
+  padding: 18px 22px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid rgba(99,102,241,0.08);
+}
+.healing-panel-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.healing-panel-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.healing-panel-desc {
+  font-size: 0.68rem;
+  color: #6b7280;
+  padding: 0 22px;
+  margin-top: 4px;
+}
+
+/* Without Cortex */
+.panel-no-cortex {
+  background: linear-gradient(180deg, rgba(40,10,10,0.35), rgba(15,8,8,0.5));
+  border: 1px solid rgba(248,113,113,0.12);
+}
+.panel-no-cortex .healing-panel-dot { background: #f87171; box-shadow: 0 0 6px #f87171; }
+.panel-no-cortex .healing-panel-title { color: #fca5a5; }
+
+/* With Cortex */
+.panel-cortex {
+  background: linear-gradient(180deg, rgba(10,25,20,0.35), rgba(8,15,12,0.5));
+  border: 1px solid rgba(74,222,128,0.12);
+}
+.panel-cortex .healing-panel-dot { background: #4ade80; box-shadow: 0 0 6px #4ade80; }
+.panel-cortex .healing-panel-title { color: #86efac; }
+
+/* Process tree */
+.process-tree {
+  flex: 1;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.proc-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+  position: relative;
+}
+
+/* Indent levels for tree */
+.proc-row[data-depth="0"] { margin-left: 0; }
+.proc-row[data-depth="1"] { margin-left: 28px; }
+.proc-row[data-depth="2"] { margin-left: 56px; }
+
+/* Tree connector lines */
+.proc-row[data-depth="1"]::before,
+.proc-row[data-depth="2"]::before {
+  content: '';
+  position: absolute;
+  left: -16px;
+  top: 50%;
+  width: 12px;
+  height: 1px;
+  background: rgba(99,102,241,0.2);
+}
+.proc-row[data-depth="1"]::after,
+.proc-row[data-depth="2"]::after {
+  content: '';
+  position: absolute;
+  left: -16px;
+  top: -4px;
+  width: 1px;
+  height: calc(50% + 4px);
+  background: rgba(99,102,241,0.2);
+}
+
+/* Process states */
+.proc-row.healthy {
+  background: rgba(74,222,128,0.06);
+}
+.proc-row.crashed {
+  background: rgba(248,113,113,0.1);
+  animation: procCrashPulse 1s ease-in-out infinite;
+}
+.proc-row.halted {
+  background: rgba(251,191,36,0.06);
+}
+.proc-row.restarting {
+  background: rgba(96,165,250,0.08);
+}
+.proc-row.dead {
+  background: rgba(248,113,113,0.04);
+  opacity: 0.5;
+}
+
+@keyframes procCrashPulse {
+  0%, 100% { box-shadow: inset 0 0 8px rgba(248,113,113,0.08); }
+  50% { box-shadow: inset 0 0 20px rgba(248,113,113,0.18); }
+}
+
+/* Status indicator dot */
+.proc-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: all 0.3s;
+}
+.proc-row.healthy .proc-dot { background: #4ade80; box-shadow: 0 0 5px #4ade80; }
+.proc-row.crashed .proc-dot { background: #f87171; box-shadow: 0 0 8px #f87171; }
+.proc-row.halted .proc-dot { background: #fbbf24; box-shadow: 0 0 5px #fbbf24; }
+.proc-row.restarting .proc-dot {
+  background: #60a5fa;
+  box-shadow: 0 0 5px #60a5fa;
+  animation: spin 1s linear infinite;
+}
+.proc-row.dead .proc-dot { background: #6b7280; }
+
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* Process info */
+.proc-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+.proc-row.healthy .proc-icon { color: #4ade80; }
+.proc-row.crashed .proc-icon { color: #f87171; }
+.proc-row.halted .proc-icon { color: #fbbf24; }
+.proc-row.restarting .proc-icon { color: #60a5fa; }
+.proc-row.dead .proc-icon { color: #6b7280; }
+
+.proc-name {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #e0e6f0;
+  flex: 1;
+  font-family: 'JetBrains Mono', monospace;
+}
+.proc-row.dead .proc-name { color: #6b7280; text-decoration: line-through; }
+
+.proc-pid {
+  font-size: 0.6rem;
+  color: #4b5563;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.proc-badge {
+  font-size: 0.5rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.proc-row.healthy .proc-badge { background: rgba(74,222,128,0.1); color: #4ade80; border: 1px solid rgba(74,222,128,0.15); }
+.proc-row.crashed .proc-badge { background: rgba(248,113,113,0.1); color: #f87171; border: 1px solid rgba(248,113,113,0.2); }
+.proc-row.halted .proc-badge { background: rgba(251,191,36,0.1); color: #fbbf24; border: 1px solid rgba(251,191,36,0.15); }
+.proc-row.restarting .proc-badge { background: rgba(96,165,250,0.1); color: #60a5fa; border: 1px solid rgba(96,165,250,0.15); }
+.proc-row.dead .proc-badge { background: rgba(107,114,128,0.1); color: #6b7280; border: 1px solid rgba(107,114,128,0.15); }
+
+/* Result banner */
+.healing-result {
+  padding: 14px 20px;
+  margin: 0 18px 18px;
+  border-radius: 14px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-align: center;
+}
+.healing-result.fail {
+  background: rgba(248,113,113,0.08);
+  border: 1px solid rgba(248,113,113,0.15);
+  color: #f87171;
+}
+.healing-result.success {
+  background: rgba(74,222,128,0.08);
+  border: 1px solid rgba(74,222,128,0.15);
+  color: #4ade80;
+}
+
+/* Narration */
+.healing-narration {
+  font-size: 0.82rem;
+  color: #94a3b8;
+  text-align: center;
+  margin-top: 20px;
+  padding: 14px 24px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(30,27,58,0.5), rgba(15,12,40,0.5));
+  border: 1px solid rgba(99,102,241,0.1);
+  max-width: 1200px;
+  width: 100%;
+  line-height: 1.6;
+  min-height: 50px;
+}
+.healing-narration strong { color: #a5b4fc; }
+
+/* Feature callouts */
+.healing-features {
+  display: flex;
+  gap: 16px;
+  max-width: 1200px;
+  width: 100%;
+  margin-top: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.healing-feature {
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(30,27,58,0.5), rgba(15,12,40,0.5));
+  border: 1px solid rgba(99,102,241,0.1);
+  flex: 1;
+  min-width: 200px;
+  max-width: 280px;
+}
+.healing-feature-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #a5b4fc;
+  margin-bottom: 4px;
+}
+.healing-feature-desc {
+  font-size: 0.65rem;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+@media (max-width: 900px) {
+  .healing-stage { grid-template-columns: 1fr; }
+}

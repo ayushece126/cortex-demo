@@ -411,20 +411,57 @@ export default function ChaosMonkey() {
 
       {/* Controls */}
       <div className="chaos-controls">
-        <button className="btn-init" onClick={bootSystem} disabled={phase !== 'idle'}>
-          <Cpu size={16} /> Initialize System
-        </button>
-        <button className={`btn-unleash ${phase === 'chaos' ? 'active' : ''}`} onClick={unleashChaos} disabled={phase !== 'running'}>
-          <Zap size={16} /> Unleash Chaos
-        </button>
-        <button className="btn btn-ghost" onClick={reset}>
-          <RefreshCw size={14} /> Reset
+        <button
+          className="group relative inline-flex items-center gap-2.5 px-7 py-3.5 rounded-2xl font-semibold text-sm tracking-wide text-white overflow-hidden transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed disabled:transform-none hover:translate-y-[-2px] hover:shadow-[0_8px_40px_rgba(99,102,241,0.4)]"
+          style={{
+            background: 'linear-gradient(135deg, #6366f1, #4f46e5, #4338ca)',
+            boxShadow: '0 4px 25px rgba(99,102,241,0.25), inset 0 1px 0 rgba(255,255,255,0.1)',
+          }}
+          onClick={bootSystem}
+          disabled={phase !== 'idle'}
+        >
+          <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <Cpu size={16} className="relative z-10" />
+          <span className="relative z-10">Initialize System</span>
         </button>
 
-        <div className="speed-control">
-          <span className="speed-label">Speed</span>
+        <button
+          className={`group relative inline-flex items-center gap-2.5 px-7 py-3.5 rounded-2xl font-bold text-sm tracking-[1.5px] uppercase text-white overflow-hidden transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed disabled:transform-none hover:translate-y-[-2px] ${phase === 'chaos' ? 'animate-pulse' : ''}`}
+          style={{
+            background: phase === 'running' ? 'linear-gradient(135deg, #ef4444, #dc2626, #b91c1c)' : 'linear-gradient(135deg, #7f1d1d, #991b1b, #7f1d1d)',
+            boxShadow: phase === 'running' ? '0 4px 30px rgba(239,68,68,0.35), inset 0 1px 0 rgba(255,255,255,0.1)' : '0 2px 10px rgba(0,0,0,0.3)',
+          }}
+          onClick={unleashChaos}
+          disabled={phase !== 'running'}
+        >
+          <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          {phase === 'running' && (
+            <span className="absolute inset-0 rounded-2xl border border-red-400/30 animate-ping opacity-20" />
+          )}
+          <Zap size={16} className="relative z-10" />
+          <span className="relative z-10">Unleash Chaos</span>
+        </button>
+
+        <button
+          className="group inline-flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-medium text-slate-400 hover:text-indigo-300 border border-slate-700/40 bg-slate-800/40 hover:bg-indigo-500/10 hover:border-indigo-500/30 backdrop-blur-sm transition-all duration-200"
+          onClick={reset}
+        >
+          <RefreshCw size={14} className="group-hover:rotate-180 transition-transform duration-500" />
+          <span>Reset</span>
+        </button>
+
+        <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800/40 border border-slate-700/30 backdrop-blur-sm">
+          <span className="text-[0.65rem] text-slate-500 uppercase tracking-[1.5px] font-semibold">Speed</span>
           {[1, 2, 4].map(s => (
-            <button key={s} className={`speed-btn ${speed === s ? 'active' : ''}`} onClick={() => setSpeed(s)}>
+            <button
+              key={s}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 border ${
+                speed === s
+                  ? 'bg-indigo-500/20 border-indigo-500/40 text-indigo-300 shadow-[0_0_12px_rgba(99,102,241,0.2)]'
+                  : 'bg-transparent border-slate-700/30 text-slate-500 hover:text-slate-300 hover:bg-slate-700/30'
+              }`}
+              onClick={() => setSpeed(s)}
+            >
               {s}x
             </button>
           ))}
