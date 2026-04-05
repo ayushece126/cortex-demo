@@ -1,42 +1,33 @@
 import { useState, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, RotateCcw, Pause } from 'lucide-react';
+import { Play, RotateCcw, Pause, FileCode, CheckCircle, Network, Layers } from 'lucide-react';
 import './IpcFlow.css';
 
-/*
- * Models the REAL IPC flow from the Krill codebase:
- *
- * 1. User types `krill up` in terminal
- * 2. CLI reads config (config_discovery.rs)
- * 3. CLI creates an os_pipe::pipe() for startup communication (daemon_manager.rs:41)
- * 4. CLI spawns daemon as background process with --startup-pipe-fd (daemon_manager.rs:49-56)
- * 5. Daemon loads config, validates it (KrillConfig::from_file + validate)
- * 6. Daemon opens Unix Domain Socket at /tmp/krill.sock (ipc_server.rs)
- * 7. Daemon sends StartupMessage::Success via the pipe (daemon main.rs)
- * 8. CLI reads pipe, gets success confirmation (daemon_manager.rs:101-109)
- * 9. CLI connects to UDS for ongoing communication
- * 10. Messages flow as JSON-serialized ClientMessage / ServerMessage over UDS
- */
-
 const IPC_STEPS = [
-  { text: 'User types krill up in terminal', code: 'cli/main.rs', actor: 'cli' },
-  { text: 'CLI discovers & reads robot.yaml config', code: 'config_discovery.rs', actor: 'cli' },
-  { text: 'CLI creates OS pipe for startup IPC', code: 'os_pipe::pipe()', actor: 'cli' },
-  { text: 'CLI spawns daemon as background process', code: 'tokio::process::Command', actor: 'both' },
-  { text: 'Daemon loads config, builds DependencyGraph', code: 'DependencyGraph::new()', actor: 'daemon' },
-  { text: 'Daemon opens Unix Domain Socket', code: '/tmp/krill.sock', actor: 'daemon' },
-  { text: 'Daemon writes StartupMessage::Success to pipe', code: 'serde_json → pipe fd', actor: 'daemon' },
-  { text: 'CLI reads pipe confirmation — daemon is ready', code: 'read_startup_result()', actor: 'cli' },
-  { text: 'CLI connects to UDS for ongoing commands', code: 'UnixStream::connect()', actor: 'cli' },
-  { text: 'JSON messages flow: ClientMessage ↔ ServerMessage', code: 'Heartbeat / Command / Snapshot', actor: 'both' },
+  { text: 'User types `krill up` in terminal', code: 'cli/main.rs', actor: 'cli' },
+  { text: 'CLI parses command and reads robot.yaml', code: 'config_discovery.rs', actor: 'cli', action: 'show_yaml' },
+  { text: 'CLI fires up daemon in background & builds OS pipe', code: 'tokio::process', actor: 'both', action: 'spawn_daemon' },
+  { text: 'Daemon builds graph & guarantees safety', code: 'DependencyGraph::new()', actor: 'daemon', action: 'build_dag' },
+  { text: 'Daemon sends ready confirmation via pipe', code: 'StartupMessage::Success', actor: 'daemon', packet: 'left' },
+  { text: 'CLI reads confirmation & drops pipe', code: 'read_startup_result()', actor: 'cli', action: 'cli_ready' },
+  { text: 'Daemon fires up Tokio tasks for each service', code: 'tokio::spawn(ServiceRunner)', actor: 'daemon', action: 'spawn_tasks' },
+  { text: 'Tasks stream health/logs over UDS channels', code: 'UnixStream::connect()', actor: 'both', packet: 'bi' },
 ];
 
 export default function IpcFlow() {
   const [stepStates, setStepStates] = useState(IPC_STEPS.map(() => 'idle'));
-  const [packetPos, setPacketPos] = useState(null); // null | { dir: 'right'|'left', progress: 0-100 }
+  const [packetPos, setPacketPos] = useState(null); 
   const [commandText, setCommandText] = useState('');
   const [phase, setPhase] = useState('idle');
   const [paused, setPaused] = useState(false);
+  
+  // Visual states
+  const [hasYaml, setHasYaml] = useState(false);
+  const [daemonActive, setDaemonActive] = useState(false);
+  const [hasDag, setHasDag] = useState(false);
+  const [hasTasks, setHasTasks] = useState(false);
+  const [cliReady, setCliReady] = useState(false);
+
   const pauseRef = useRef(false);
   const cancelRef = useRef(false);
 
@@ -62,7 +53,6 @@ export default function IpcFlow() {
     }));
   };
 
-  // Animate typing the command
   const typeCommand = useCallback(async (text) => {
     for (let i = 0; i <= text.length; i++) {
       if (cancelRef.current) return;
@@ -71,7 +61,6 @@ export default function IpcFlow() {
     }
   }, [wait]);
 
-  // Animate a packet moving across
   const sendPacket = useCallback(async (dir) => {
     const steps = 20;
     for (let i = 0; i <= steps; i++) {
@@ -91,26 +80,30 @@ export default function IpcFlow() {
     setStepStates(IPC_STEPS.map(() => 'idle'));
     setCommandText('');
     setPacketPos(null);
+    setHasYaml(false); setDaemonActive(false); setHasDag(false); setHasTasks(false); setCliReady(false);
 
-    // Type the command
     await typeCommand('krill up');
     await wait(400);
 
-    // Step through IPC flow
     for (let i = 0; i < IPC_STEPS.length; i++) {
       if (cancelRef.current) return;
       setStep(i, 'active');
 
-      // Send packet animation for cross-component steps
-      if (i === 3) await sendPacket('right');  // CLI spawns daemon
-      if (i === 6) await sendPacket('left');   // Daemon sends success back
-      if (i === 8) await sendPacket('right');  // CLI connects to UDS
-      if (i === 9) {
+      const action = IPC_STEPS[i].action;
+      const packet = IPC_STEPS[i].packet;
+
+      if (action === 'show_yaml') setHasYaml(true);
+      if (action === 'spawn_daemon') { await sendPacket('right'); setDaemonActive(true); }
+      if (action === 'build_dag') setHasDag(true);
+      if (packet === 'left') await sendPacket('left');
+      if (action === 'cli_ready') setCliReady(true);
+      if (action === 'spawn_tasks') setHasTasks(true);
+      if (packet === 'bi') {
         await sendPacket('right');
         await sendPacket('left');
       }
 
-      await wait(i === 9 ? 800 : 1200);
+      await wait(packet === 'bi' ? 800 : 1200);
       setStep(i, 'done');
     }
 
@@ -126,19 +119,19 @@ export default function IpcFlow() {
     setStepStates(IPC_STEPS.map(() => 'idle'));
     setCommandText('');
     setPacketPos(null);
+    setHasYaml(false); setDaemonActive(false); setHasDag(false); setHasTasks(false); setCliReady(false);
   };
 
   return (
     <section className="section ipc-section" id="ipc-flow">
       <motion.div className="section-badge" initial={{ opacity: 0, y: -10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-        04 — INTER-PROCESS COMMUNICATION
+        04 — THE DATA FLOW
       </motion.div>
       <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}>
-        How CLI Talks to the Daemon
+        Inside the Daemon
       </motion.h2>
       <motion.p className="section-sub" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }}>
-        Krill uses a <strong>two-stage IPC architecture</strong>: an OS pipe for zero-downtime daemon spawning,
-        then a persistent Unix Domain Socket for all runtime communication. Watch the exact data flow.
+        Watch exactly what happens when you type `krill up`. From CLI handshakes, dependency graph building, perfectly timed Tokio task spawning, to duplex channel communication.
       </motion.p>
 
       <motion.div className="ipc-stage" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}>
@@ -152,10 +145,26 @@ export default function IpcFlow() {
 
         {/* Actor boxes */}
         <div className="ipc-actors" style={{ marginTop: 20 }}>
+          
+          {/* CLI Actor */}
           <div className="ipc-actor actor-cli">
             <span className="ipc-actor-icon">💻</span>
             <div className="ipc-actor-name">krill-cli</div>
-            <div className="ipc-actor-sub">User-facing binary</div>
+            <div className="ipc-actor-sub">User terminal</div>
+            <div className="ipc-actor-internals">
+               <AnimatePresence>
+                 {hasYaml && (
+                   <motion.div className="ipc-box" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}>
+                     <FileCode size={14} className="ipc-box-icon" /> robot.yaml
+                   </motion.div>
+                 )}
+                 {cliReady && (
+                   <motion.div className="ipc-box success-box" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}>
+                     <CheckCircle size={14} className="ipc-box-icon" /> Pipeline Ready
+                   </motion.div>
+                 )}
+               </AnimatePresence>
+            </div>
           </div>
 
           <div className="ipc-tube">
@@ -176,13 +185,30 @@ export default function IpcFlow() {
                 )}
               </AnimatePresence>
             </div>
-            <div className="ipc-tube-label">Unix Domain Socket / OS Pipe</div>
+            <div className="ipc-tube-label">OS PIPE / CHANNELS</div>
           </div>
 
-          <div className="ipc-actor actor-daemon">
+          {/* Daemon Actor */}
+          <div className={`ipc-actor actor-daemon ${daemonActive ? 'active' : 'dormant'}`}>
             <span className="ipc-actor-icon">⚙️</span>
             <div className="ipc-actor-name">krill-daemon</div>
-            <div className="ipc-actor-sub">Background orchestrator</div>
+            <div className="ipc-actor-sub">Background Orchestrator</div>
+            <div className="ipc-actor-internals">
+               <AnimatePresence>
+                 {hasDag && (
+                   <motion.div className="ipc-box" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}>
+                     <Network size={14} className="ipc-box-icon" /> DAG Engine
+                   </motion.div>
+                 )}
+                 {hasTasks && (
+                   <motion.div className="ipc-tasks-grid" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                      <div className="ipc-task"><Layers size={10} /> Tokio Task (LiDAR)</div>
+                      <div className="ipc-task"><Layers size={10} /> Tokio Task (SLAM)</div>
+                      <div className="ipc-task"><Layers size={10} /> Tokio Task (Motor)</div>
+                   </motion.div>
+                 )}
+               </AnimatePresence>
+            </div>
           </div>
         </div>
 
@@ -206,7 +232,7 @@ export default function IpcFlow() {
       {/* Controls */}
       <div className="controls" style={{ marginTop: 20 }}>
         <button className="btn btn-primary" onClick={run} disabled={phase === 'running'}>
-          <Play size={14} /> Trace IPC Flow
+          <Play size={14} /> Simulate Data Flow
         </button>
         <button className="btn btn-warning" onClick={togglePause} disabled={phase !== 'running'}>
           {paused ? <><Play size={14} /> Resume</> : <><Pause size={14} /> Pause</>}

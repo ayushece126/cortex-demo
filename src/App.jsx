@@ -22,7 +22,7 @@ export default function App() {
 
       {/* ACT 2: How — Technical Deep Dive */}
       <YamlDagKahn />
-      {/* <IpcFlow /> */}
+      <IpcFlow />
 
       {/* ACT 3: Proof — Stress Testing & Resilience */}
       <ChaosMonkey />
