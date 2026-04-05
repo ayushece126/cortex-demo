@@ -14,3 +14,14 @@
 .cell-partial { color: #fbbf24; }
 .comp-table tbody tr { transition: background 0.3s; }
 .comp-table tbody tr:hover { background: #1e1b3a33; }
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .table-wrap { padding: 0; }
+  .comp-table th, .comp-table td { padding: 10px 10px; font-size: 0.68rem; }
+  .comp-table th { font-size: 0.62rem; }
+}
+@media (max-width: 480px) {
+  .comp-table th, .comp-table td { padding: 8px 6px; font-size: 0.58rem; white-space: nowrap; }
+  .comp-table th { font-size: 0.52rem; }
+}

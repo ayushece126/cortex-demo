@@ -264,3 +264,32 @@
 @media (max-width: 900px) {
   .healing-stage { grid-template-columns: 1fr; }
 }
+@media (max-width: 768px) {
+  .healing-panel-header { padding: 12px 14px 10px; }
+  .healing-panel-title { font-size: 0.68rem; }
+  .healing-panel-desc { font-size: 0.6rem; padding: 0 14px; }
+  .process-tree { padding: 12px 10px; }
+  .proc-row { padding: 6px 8px; gap: 6px; }
+  .proc-row[data-depth="1"] { margin-left: 18px; }
+  .proc-row[data-depth="2"] { margin-left: 36px; }
+  .proc-name { font-size: 0.64rem; }
+  .proc-pid { font-size: 0.52rem; }
+  .proc-badge { font-size: 0.45rem; padding: 2px 6px; }
+  .proc-icon { width: 14px; height: 14px; }
+  .healing-result { font-size: 0.7rem; padding: 10px 14px; margin: 0 10px 12px; }
+  .healing-narration { font-size: 0.75rem; padding: 10px 16px; }
+  .healing-features { gap: 10px; }
+  .healing-feature { padding: 10px 14px; min-width: 150px; }
+  .healing-feature-title { font-size: 0.65rem; }
+  .healing-feature-desc { font-size: 0.58rem; }
+}
+@media (max-width: 480px) {
+  .proc-row { padding: 5px 6px; }
+  .proc-row[data-depth="1"] { margin-left: 14px; }
+  .proc-row[data-depth="2"] { margin-left: 28px; }
+  .proc-name { font-size: 0.58rem; }
+  .proc-pid { display: none; }
+  .proc-badge { font-size: 0.42rem; padding: 1px 5px; }
+  .proc-dot { width: 6px; height: 6px; }
+  .healing-feature { min-width: 100%; max-width: 100%; }
+}

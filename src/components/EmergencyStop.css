@@ -20,3 +20,27 @@
 .emg-overlay-title { font-size: 2rem; font-weight: 900; color: white; letter-spacing: 4px; }
 .emg-overlay-sub { font-size: 1rem; color: #fecaca; margin-top: 6px; }
 .emg-overlay-detail { font-size: 0.8rem; color: #fecaca; margin-top: 12px; max-width: 500px; line-height: 1.5; opacity: 0.8; }
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .emg-services { gap: 10px; }
+  .emg-svc { width: 90px; padding: 12px 8px; border-radius: 12px; }
+  .emg-icon { font-size: 1.3rem; }
+  .emg-name { font-size: 0.6rem; }
+  .emg-status { font-size: 0.48rem; padding: 2px 6px; }
+  .emg-badge { font-size: 0.4rem; padding: 2px 5px; top: -6px; right: -6px; }
+  .emg-overlay { padding: 20px; }
+  .emg-overlay-icon { font-size: 3rem; }
+  .emg-overlay-title { font-size: 1.5rem; letter-spacing: 3px; }
+  .emg-overlay-sub { font-size: 0.85rem; }
+  .emg-overlay-detail { font-size: 0.7rem; max-width: 90%; }
+}
+@media (max-width: 480px) {
+  .emg-svc { width: 75px; padding: 10px 6px; }
+  .emg-icon { font-size: 1.1rem; }
+  .emg-name { font-size: 0.52rem; }
+  .emg-status { font-size: 0.42rem; }
+  .emg-overlay-title { font-size: 1.2rem; letter-spacing: 2px; }
+  .emg-overlay-sub { font-size: 0.75rem; }
+  .emg-overlay-detail { font-size: 0.62rem; }
+}

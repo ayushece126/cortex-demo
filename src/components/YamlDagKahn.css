@@ -265,5 +265,34 @@
 
 @media (max-width: 1100px) {
   .yaml-dag-stage { grid-template-columns: 1fr; }
-  .yaml-dag-stage > * { min-height: 300px; }
+  .yaml-dag-stage > * { min-height: 280px; }
+}
+@media (max-width: 768px) {
+  .yaml-dag-stage { gap: 12px; }
+  .yaml-dag-stage > * { min-height: 240px; }
+  .yaml-col-header { padding: 8px 12px; }
+  .yaml-content { font-size: 0.6rem; padding: 10px 12px; line-height: 1.6; }
+  .dag-col-header { font-size: 0.58rem; padding: 8px 12px; }
+  .dag-canvas { padding: 12px; }
+  .dag-nodes-container { gap: 36px; }
+  .dag-layer-row { gap: 12px; }
+  .dag-node-v2 { width: 85px; padding: 8px 6px; border-radius: 10px; }
+  .dag-node-icon { font-size: 1.1rem; }
+  .dag-node-label { font-size: 0.52rem; }
+  .dag-node-indegree { font-size: 0.42rem; }
+  .algo-col-header { font-size: 0.58rem; padding: 8px 12px; }
+  .algo-steps { padding: 10px; gap: 4px; }
+  .algo-step { font-size: 0.6rem; padding: 8px 10px; }
+  .algo-step-num { width: 16px; height: 16px; line-height: 16px; font-size: 0.48rem; margin-right: 6px; }
+  .algo-queue { padding: 10px 12px; font-size: 0.55rem; }
+  .algo-queue-item { font-size: 0.5rem; padding: 2px 8px; }
+}
+@media (max-width: 480px) {
+  .dag-node-v2 { width: 70px; padding: 6px 4px; }
+  .dag-node-icon { font-size: 0.9rem; }
+  .dag-node-label { font-size: 0.46rem; }
+  .dag-layer-row { gap: 8px; }
+  .dag-nodes-container { gap: 28px; }
+  .yaml-content { font-size: 0.55rem; }
+  .algo-step { font-size: 0.55rem; padding: 6px 8px; }
 }

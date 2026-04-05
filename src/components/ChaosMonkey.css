@@ -345,3 +345,35 @@
 }
 .speed-btn:hover { background: rgba(99,102,241,0.15); }
 .speed-btn.active { background: rgba(99,102,241,0.25); border-color: #6366f1; color: #c4b5fd; }
+
+/* === RESPONSIVE === */
+@media (max-width: 1024px) {
+  .chaos-stage { height: 480px; }
+  .chaos-node { min-width: 100px; padding: 8px 10px; }
+}
+@media (max-width: 768px) {
+  .chaos-stage { height: 380px; border-radius: 16px; }
+  .chaos-node { min-width: 80px; padding: 6px 8px; border-radius: 8px; }
+  .chaos-node-name { font-size: 0.58rem; }
+  .chaos-node-layer { font-size: 0.45rem; }
+  .chaos-node-icon { width: 13px; height: 13px; }
+  .chaos-stats { gap: 8px; margin-top: 12px; }
+  .chaos-stat { padding: 6px 10px; font-size: 0.7rem; gap: 6px; }
+  .chaos-stat-count { font-size: 0.85rem; }
+  .chaos-stat-label { font-size: 0.65rem; }
+  .chaos-controls { gap: 8px; margin-top: 16px; }
+  .chaos-log { height: 130px; padding: 10px 12px; font-size: 0.6rem; margin-top: 12px; }
+}
+@media (max-width: 480px) {
+  .chaos-stage { height: 300px; border-radius: 12px; }
+  .chaos-node { min-width: 65px; padding: 5px 6px; }
+  .chaos-node-name { font-size: 0.5rem; }
+  .chaos-node-layer { font-size: 0.4rem; }
+  .chaos-node-icon { width: 11px; height: 11px; }
+  .chaos-node-header { gap: 4px; margin-bottom: 2px; }
+  .chaos-node-dot { width: 5px; height: 5px; }
+  .chaos-stats { flex-direction: column; align-items: stretch; gap: 4px; }
+  .chaos-stat { justify-content: center; }
+  .chaos-log { height: 110px; font-size: 0.55rem; }
+  .chaos-controls { gap: 6px; }
+}
