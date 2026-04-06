@@ -149,7 +149,7 @@ export default function IpcFlow() {
           {/* CLI Actor */}
           <div className="ipc-actor actor-cli">
             <span className="ipc-actor-icon">💻</span>
-            <div className="ipc-actor-name">krill-cli</div>
+            <div className="ipc-actor-name">cortex-cli</div>
             <div className="ipc-actor-sub">User terminal</div>
             <div className="ipc-actor-internals">
                <AnimatePresence>
@@ -191,7 +191,7 @@ export default function IpcFlow() {
           {/* Daemon Actor */}
           <div className={`ipc-actor actor-daemon ${daemonActive ? 'active' : 'dormant'}`}>
             <span className="ipc-actor-icon">⚙️</span>
-            <div className="ipc-actor-name">krill-daemon</div>
+            <div className="ipc-actor-name">cortex-daemon</div>
             <div className="ipc-actor-sub">Background Orchestrator</div>
             <div className="ipc-actor-internals">
                <AnimatePresence>

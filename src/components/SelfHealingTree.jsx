@@ -7,7 +7,7 @@ import {
 import './SelfHealingTree.css';
 
 /*
- * Process tree simulating a real Krill workspace.
+ * Process tree simulating a real Cortex workspace.
  * Each process has: id, name, icon, depth (tree indent), parent dependency.
  * This models the EXACT behavior from orchestrator.rs:
  *   - cascade_failure(): finds all transitive dependents
@@ -42,10 +42,10 @@ function cascadeFailure(failedId) {
 const NARRATIONS = {
   idle: 'This is your robot\'s process tree — a live view of all managed services. Press "Crash LIDAR" to see what happens when a critical sensor fails.',
   crash: '💥 <strong>lidar_driver</strong> exits with code -11 (SIGSEGV). The process has crashed.',
-  no_cortex_cascade: '😱 <strong>Without Krill:</strong> perception_ai reads stale data and corrupts its state. nav_planner receives garbage coordinates. motor_control sends invalid signals. Total cascade failure.',
+  no_cortex_cascade: '😱 <strong>Without Cortex:</strong> perception_ai reads stale data and corrupts its state. nav_planner receives garbage coordinates. motor_control sends invalid signals. Total cascade failure.',
   no_cortex_result: '☠️ The entire software stack collapses in 800ms. The robot is blind and uncontrollable.',
-  cortex_detect: '🔍 <strong>Krill\'s monitor_service()</strong> detects the exit. It reads exit code and checks the restart policy from krill.yaml.',
-  cortex_cascade: '🛡️ <strong>cascade_failure()</strong> runs BFS from lidar → finds 3 dependent services. Krill surgically HALTS them to prevent corrupted data flow.',
+  cortex_detect: '🔍 <strong>Cortex\'s monitor_service()</strong> detects the exit. It reads exit code and checks the restart policy from cortex.yaml.',
+  cortex_cascade: '🛡️ <strong>cascade_failure()</strong> runs BFS from lidar → finds 3 dependent services. Cortex surgically HALTS them to prevent corrupted data flow.',
   cortex_restart: '🔄 <strong>start_when_ready()</strong> restarts lidar_driver. It waits for the process to report HEALTHY.',
   cortex_recover: '✅ lidar_driver is HEALTHY. <strong>start_when_ready()</strong> now restarts dependents in DAG order — each one waiting for its parent to be healthy first.',
   cortex_done: '💚 Full recovery in 3.2 seconds. Zero data corruption. Zero undefined states. The robot never lost safety monitoring.',
@@ -95,12 +95,12 @@ export default function SelfHealingTree() {
     await wait(2000);
     if (cancelRef.current) return;
 
-    // === RIGHT: Krill orchestrator kicks in ===
+    // === RIGHT: Cortex orchestrator kicks in ===
     setNarration(NARRATIONS.cortex_detect);
     await wait(1800);
     if (cancelRef.current) return;
 
-    // Krill runs cascade_failure() — surgically halts dependents
+    // Cortex runs cascade_failure() — surgically halts dependents
     setNarration(NARRATIONS.cortex_cascade);
     for (const id of cascade) {
       await wait(350);
@@ -110,14 +110,14 @@ export default function SelfHealingTree() {
     await wait(1200);
     if (cancelRef.current) return;
 
-    // Krill restarts lidar_driver
+    // Cortex restarts lidar_driver
     setNarration(NARRATIONS.cortex_restart);
     setRightStates(prev => ({ ...prev, lidar: 'restarting' }));
     await wait(1500);
     if (cancelRef.current) return;
     setRightStates(prev => ({ ...prev, lidar: 'healthy' }));
 
-    // Krill restarts dependents in DAG order
+    // Cortex restarts dependents in DAG order
     setNarration(NARRATIONS.cortex_recover);
     await wait(800);
     const restartOrder = ['perception', 'navigation', 'motor'];
@@ -189,17 +189,17 @@ export default function SelfHealingTree() {
         What Happens When a Process Crashes?
       </motion.h2>
       <motion.p className="section-sub" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }}>
-        Traditional systems let failures cascade silently. Krill's orchestrator <strong>detects</strong> the
+        Traditional systems let failures cascade silently. Cortex's orchestrator <strong>detects</strong> the
         crash, <strong>halts</strong> dependent services to prevent data corruption, <strong>restarts</strong> the root
         cause, and <strong>recovers</strong> the entire tree — automatically.
       </motion.p>
 
       <motion.div className="healing-stage" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}>
-        {/* LEFT: Without Krill */}
+        {/* LEFT: Without Cortex */}
         <div className="healing-panel panel-no-cortex">
           <div className="healing-panel-header">
             <div className="healing-panel-dot" />
-            <span className="healing-panel-title">Without Krill</span>
+            <span className="healing-panel-title">Without Cortex</span>
           </div>
           <p className="healing-panel-desc">Processes run independently — no lifecycle management</p>
           {renderTree(leftStates, 'left')}
@@ -212,11 +212,11 @@ export default function SelfHealingTree() {
           </AnimatePresence>
         </div>
 
-        {/* RIGHT: With Krill */}
+        {/* RIGHT: With Cortex */}
         <div className="healing-panel panel-cortex">
           <div className="healing-panel-header">
             <div className="healing-panel-dot" />
-            <span className="healing-panel-title">With Krill Orchestrator</span>
+            <span className="healing-panel-title">With Cortex Orchestrator</span>
           </div>
           <p className="healing-panel-desc">DAG-aware lifecycle with cascade_failure() + start_when_ready()</p>
           {renderTree(rightStates, 'right')}

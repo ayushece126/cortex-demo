@@ -4,16 +4,16 @@ import { Play, RotateCcw, Pause } from 'lucide-react';
 import './YamlDagKahn.css';
 
 /*
- * Mirrors the REAL krill-shell.yaml and krill-common/src/dag.rs
+ * Mirrors the REAL cortex-shell.yaml and cortex-common/src/dag.rs
  *
  * The YAML config defines services + dependencies.
  * DependencyGraph::new() builds edges + reverse_edges.
  * DependencyGraph::startup_order() runs Kahn's topological sort.
  */
 
-// The YAML lines to type out (based on real examples/krill-shell.yaml)
+// The YAML lines to type out (based on real examples/cortex-shell.yaml)
 const YAML_LINES = [
-  { text: '# robot.yaml — Krill Workspace Config', cls: 'comment' },
+  { text: '# robot.yaml — Cortex Workspace Config', cls: 'comment' },
   { text: 'version: "1"', key: 'version', val: '"1"' },
   { text: 'name: autonomous-robot', key: 'name', val: 'autonomous-robot' },
   { text: '' },
@@ -300,7 +300,7 @@ export default function YamlDagKahn() {
         YAML → DAG → Kahn's Algorithm
       </motion.h2>
       <motion.p className="section-sub" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }}>
-        Watch how Krill reads your <code style={{color:'#c084fc'}}>robot.yaml</code> config, builds a
+        Watch how Cortex reads your <code style={{color:'#c084fc'}}>robot.yaml</code> config, builds a
         Directed Acyclic Graph of dependencies, then runs <strong>Kahn's topological sort</strong> to
         compute the mathematically optimal startup order.
       </motion.p>
